@@ -23,7 +23,12 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     if [ ! -e .status ];then
         timestamp=0
     fi
-    if [ "`screen -ls | grep "player"`" = "" ] && ([ `cat /sys/class/gpio/gpio18/value` = 1 ] || [ ${now} -lt `expr ${timestamp} + ${playDur}` ]);then
+
+    #set timestamp to pray
+    if [ `cat /sys/class/gpio/gpio18/value` = 1 ];then
+        echo $now > .status
+    fi
+    if [ "`screen -ls | grep "player"`" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
         echo play start
         if [ ${random} = 0 ];then
             if [ i = `expr ${playN} - 1` ];then
@@ -33,7 +38,6 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         elif [ ${random} = 1 ];then
             od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk '{print $1 % ${playN} }'
         fi
-        echo ${now} > .status
     fi
     if [ -e .status ];then
         timestamp=`cat .status`
