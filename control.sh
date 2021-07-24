@@ -3,36 +3,47 @@ cd `dirname $0`
 #How long play for?
 playDur=1200
 #How long run this script for?
-upTime=23400
+upTime=0
 #Is playing stop suddenly?
 #1=suddenly/0=when music is finished
 endMode=0
 #Audio source
-play=sm24276234.wav
+play=(sm24276234.wav)
+#Random?
+#1=random/0=seequential
+random=1
 
-
+playN=${#play[*]}
+i=0
 launchSec=`date +%s`
 now=`date +%s`
 rm .status > /dev/null
-while [ $now -lt `expr $launchSec + $upTime` ];do
+while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
     if [ ! -e .status ];then
         timestamp=0
     fi
-    if [ "`screen -ls | grep "player"`" = "" ] && ([ `cat /sys/class/gpio/gpio18/value` = 1 ] || [ $now -lt `expr $timestamp + $playDur` ]);then
+    if [ "`screen -ls | grep "player"`" = "" ] && ([ `cat /sys/class/gpio/gpio18/value` = 1 ] || [ ${now} -lt `expr ${timestamp} + ${playDur}` ]);then
         echo play start
-        screen -dmS player ./play.sh $play
-        echo $now > .status
+        if [ ${random} = 0 ];then
+            if [ i = `expr ${playN} - 1` ];then
+                i=0
+                screen -dmS player ./play.sh ${play[${i}]}
+            fi
+        elif [ ${random} = 1 ];then
+            od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk '{print $1 % ${playN} }'
+        fi
+        echo ${now} > .status
     fi
     if [ -e .status ];then
         timestamp=`cat .status`
-        if [ $now -gt `expr $timestamp + $playDur` ] && [ $endMode = 1 ];then
+        if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${endMode} = 1 ];then
             screen -XS player quit
             rm .status
             echo play stop
         else
             echo playing...
-            echo `expr $playDur + $timestamp - $now`/"$playDur"
+            echo `expr ${playDur} + ${timestamp} - ${now}`/"${playDur}"
         fi
     fi
     sleepenh 0.3 > /dev/null
