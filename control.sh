@@ -36,7 +36,8 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
                 screen -dmS player ./play.sh ${play[${i}]}
             fi
         elif [ ${random} = 1 ];then
-            od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk '{print $1 % ${playN} }'
+            r=`od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk '{print $1 % ${playN} }'`
+            screen -dmS player ./play.sh ${play[${r}]}
         fi
     fi
     if [ -e .status ];then
