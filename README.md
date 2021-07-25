@@ -10,9 +10,9 @@ Correct spell is "signage".
 
 Because word root of signage is from "sign".
 
-~~But "Sinage" contains "sin".
+~~But "Sinage" contains "sin".~~
 
-So this PiSinage can makes RaspberryPi  atone for original sin.~~
+~~So this PiSinage can makes RaspberryPi  atone for original sin.~~
 
 ## How to use
 
