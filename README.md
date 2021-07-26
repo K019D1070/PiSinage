@@ -14,6 +14,14 @@ Because word root of signage is from "sign".
 
 ~~So this PiSinage can makes RaspberryPi  atone for original sin.~~
 
+## Depencies
+
+GNU screen & sleepenh
+
+```
+apt-get install screen sleepnh
+```
+
 ## How to use
 
 Run this.
