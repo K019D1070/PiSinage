@@ -19,7 +19,7 @@ Because word root of signage is from "sign".
 GNU screen & sleepenh
 
 ```
-apt-get install screen sleepnh
+apt-get install screen sleepenh
 ```
 
 ## How to use
