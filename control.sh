@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd `dirname $0`
 #How long play for?
 playDur=1200
@@ -10,12 +11,14 @@ endMode=0
 #Audio source directory
 dir="./source"
 #Audio source
-play=( "sample.wav" )
+play=("sample.wav")
 #Random?
 #1=random/0=seequential
 random=1
 #Interval of main roop
 ctrlRate=0.3
+
+source config.sh
 
 playN=${#play[*]}
 i=0

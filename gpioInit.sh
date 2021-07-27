@@ -1,9 +1,9 @@
 #!/bin/sh
-if [ -e /sys/class/gpio/gpio18 ]; then
+if [ -e /sys/class/gpio/gpio${1} ]; then
     echo It had already be initialized.
 else
-    echo 18 > /sys/class/gpio/export
-    sudo echo in > /sys/class/gpio/gpio18/direction
+    echo ${1} > /sys/class/gpio/export
+    sudo echo in > "/sys/class/gpio/gpio${1}/direction"
 fi
 << USAGE
 input:
