@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 cd `dirname $0`
 
 #echo waiting for 10seconds...

@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/bash
 cd `dirname $0`
 #How long play for?
 playDur=1200
@@ -8,7 +8,7 @@ upTime=0
 #1=suddenly/0=when music is finished
 endMode=0
 #Audio source
-play=( "./source/example.m4v" )
+play=("./source/sample.wav")
 #Random?
 #1=random/0=seequential
 random=1
@@ -20,6 +20,8 @@ i=0
 timestamp=0
 launchSec=`date +%s`
 now=`date +%s`
+
+echo ${playN} source files contain.
 rm -f .status > /dev/null
 while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
@@ -34,6 +36,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     #set timestamp to pray
     if [ `cat /sys/class/gpio/gpio18/value` = 1 ];then
         echo ${now} > .status
+        timestamp=`cat .status`
     fi
     if [ "`screen -ls | grep "player"`" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
         echo play start
@@ -43,7 +46,9 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
                 screen -dmS player ./play.sh ${play[${i}]}
             fi
         elif [ ${random} = 1 ];then
-            r=`od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk '{print $1 % ${playN} }'`
+            r=$(od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk -v n=${playN} '{print $1 % n }')
+            echo No. ${r} will play.
+            echo ${play[${r}]}
             screen -dmS player ./play.sh ${play[${r}]}
         fi
     fi
@@ -52,7 +57,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         rm .status
         echo play stop
     fi
-    sleepenh ctrlRate > /dev/null
+    sleepenh ${ctrlRate} > /dev/null
 done
 rm .status
 sudo poweroff

@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 if [ -e /sys/class/gpio/gpio18 ]; then
     echo It had already be initialized.
 else
