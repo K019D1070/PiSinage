@@ -7,8 +7,10 @@ upTime=0
 #Is playing stop suddenly?
 #1=suddenly/0=when music is finished
 endMode=0
+#Audio source directory
+dir="./source"
 #Audio source
-play=("./source/sample.wav")
+play=( "sample.wav" )
 #Random?
 #1=random/0=seequential
 random=1
@@ -41,15 +43,16 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     if [ "`screen -ls | grep "player"`" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
         echo play start
         if [ ${random} = 0 ];then
-            if [ i = `expr ${playN} - 1` ];then
+            if [ i -gt `expr ${playN} - 1` ];then
                 i=0
-                screen -dmS player ./play.sh ${play[${i}]}
             fi
+            screen -dmS player ./play.sh "${dir}/${play[${i}]}"
+            i=$(expr ${i} + 1)
         elif [ ${random} = 1 ];then
             r=$(od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk -v n=${playN} '{print $1 % n }')
             echo No. ${r} will play.
             echo ${play[${r}]}
-            screen -dmS player ./play.sh ${play[${r}]}
+            screen -dmS player ./play.sh "${dir}/${play[${r}]}"
         fi
     fi
     if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${endMode} = 1 ];then
