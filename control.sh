@@ -14,8 +14,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
     if [ -e .status ];then
         timestamp=`cat .status`
-        echo playing...
-        echo `expr ${playDur} + ${timestamp} - ${now}`/"${playDur}"
+        printf "\rplaying... $(expr ${playDur} + ${timestamp} - ${now})/${playDur}"
     else
         timestamp=0
     fi
