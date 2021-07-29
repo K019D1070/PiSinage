@@ -29,3 +29,7 @@ Run this.
 ```
 ./melody.sh
 ```
+
+Config is here.
+
+`config.sh`
