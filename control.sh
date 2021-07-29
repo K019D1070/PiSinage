@@ -40,9 +40,11 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
             screen -dmS player ./play.sh "${dir}/${play[${r}]}"
         fi
     fi
-    if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${endMode} = 1 ];then
-        screen -XS player quit
+    if [ ${now} -gt `expr ${timestamp} + ${playDur}` ];then
         rm .status
+        if [ ${endMode} = 1 ];then
+            screen -XS player quit
+        fi
         echo play stop
     fi
     sleepenh ${ctrlRate} > /dev/null
