@@ -25,7 +25,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         echo ${now} > .status
         timestamp=`cat .status`
     fi
-    if [ "`screen -ls | grep "player"`" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
+    if [ $(screen -ls | grep "player") = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
         echo play start
         if [ ${random} = 0 ];then
             if [ i -gt `expr ${playN} - 1` ];then
@@ -41,11 +41,12 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         fi
     fi
     if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${timestamp} != 0 ];then
-        rm -f .status
         if [ ${endMode} = 1 ];then
             screen -XS player quit
+        elif [ $(screen -ls | grep "player") = "" ];then
+            echo play stop
+            rm -f .status
         fi
-        echo play stop
     fi
     sleepenh ${ctrlRate} > /dev/null
 done

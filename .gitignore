@@ -1,5 +1,4 @@
 source/*
 !source/sample.m4v
 *.config.sh
-!default.config.sh
 .status
