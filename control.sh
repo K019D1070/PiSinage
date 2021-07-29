@@ -40,8 +40,8 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
             screen -dmS player ./play.sh "${dir}/${play[${r}]}"
         fi
     fi
-    if [ ${now} -gt `expr ${timestamp} + ${playDur}` ];then
-        rm .status
+    if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${timestamp} != 0 ];then
+        rm -f .status
         if [ ${endMode} = 1 ];then
             screen -XS player quit
         fi
@@ -49,7 +49,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     fi
     sleepenh ${ctrlRate} > /dev/null
 done
-rm .status
+rm -f .status
 if [ ${poweroff} = 1 ];then
     sudo poweroff
 fi
