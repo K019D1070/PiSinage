@@ -7,4 +7,12 @@ source config.sh
 for i in "${sPin[@]}";do
     sudo ./gpioInit.sh ${sPin}
 done
-screen -dmS controler ./control.sh
+if [ "$(screen -ls | grep 'controler')" != "" ];then
+    echo PiSinage has already running!
+    echo If you want to kill PiSinage, you type
+    echo ./kill.sh
+    echo and enter
+    exit
+else
+    screen -dmS controler ./control.sh
+fi

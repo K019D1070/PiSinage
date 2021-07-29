@@ -9,13 +9,6 @@ launchSec=`date +%s`
 now=`date +%s`
 
 echo ${playN} source files contain.
-if [ $(screen -ls | grep "controler") != "" ];then
-    echo PiSinage has already running!
-    echo If you want to kill PiSinage, you type
-    echo ./kill
-    echo and enter
-    exit
-fi
 rm -f .status > /dev/null
 while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
@@ -32,7 +25,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         echo ${now} > .status
         timestamp=`cat .status`
     fi
-    if [ $(screen -ls | grep "player") = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
+    if [ "$(screen -ls | grep 'player')" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
         echo play start
         if [ ${random} = 0 ];then
             if [ i -gt `expr ${playN} - 1` ];then
@@ -50,7 +43,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     if [ ${now} -gt `expr ${timestamp} + ${playDur}` ] && [ ${timestamp} != 0 ];then
         if [ ${endMode} = 1 ];then
             screen -XS player quit
-        elif [ $(screen -ls | grep "player") = "" ];then
+        elif [ "$(screen -ls | grep "player")" = "" ];then
             echo play stop
             rm -f .status
         fi
