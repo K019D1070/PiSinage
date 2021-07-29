@@ -9,6 +9,13 @@ launchSec=`date +%s`
 now=`date +%s`
 
 echo ${playN} source files contain.
+if [ $(screen -ls | grep "controler") != "" ];then
+    echo PiSinage has already running!
+    echo If you want to kill PiSinage, you type
+    echo ./kill
+    echo and enter
+    exit
+fi
 rm -f .status > /dev/null
 while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
