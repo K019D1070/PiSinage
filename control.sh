@@ -8,7 +8,7 @@ timestamp=0
 launchSec=`date +%s`
 now=`date +%s`
 
-echo ${playN} source files contain.
+echo -e "${playN} source files contain."
 rm -f .status > /dev/null
 while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
     now=`date +%s`
@@ -25,7 +25,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         timestamp=`cat .status`
     fi
     if [ "$(screen -ls | grep 'player')" = "" ] && [ $now -lt `expr $timestamp + $playDur` ];then
-        echo play start
+        echo -e "\nplay start"
         if [ ${random} = 0 ];then
             if [ i -gt `expr ${playN} - 1` ];then
                 i=0
@@ -34,8 +34,8 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
             i=$(expr ${i} + 1)
         elif [ ${random} = 1 ];then
             r=$(od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk -v n=${playN} '{print $1 % n }')
-            echo No. ${r} will play.
-            echo ${play[${r}]}
+            echo -e "\nNo. ${r} will play."
+            echo -e "\n${play[${r}]}"
             screen -dmS player ./play.sh "${dir}/${play[${r}]}"
         fi
     fi
@@ -43,7 +43,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         if [ ${endMode} = 1 ];then
             screen -XS player quit
         elif [ "$(screen -ls | grep "player")" = "" ];then
-            echo play stop
+            echo -e "\nplay stop"
             rm -f .status
         fi
     fi
