@@ -35,7 +35,7 @@ while [ ${now} -lt `expr ${launchSec} + ${upTime}` ] || [ ${upTime} = 0 ];do
         elif [ ${random} = 1 ];then
             r=$(od -vAn --width=4 -tu4 -N4 < /dev/urandom | awk -v n=${playN} '{print $1 % n }')
             echo -e "\nNo. ${r} will play."
-            echo -e "\n${play[${r}]}"
+            echo -e "${play[${r}]}"
             screen -dmS player ./play.sh "${dir}/${play[${r}]}"
         fi
     fi
